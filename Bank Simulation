@@ -1,0 +1,124 @@
+// Mohamed Yousif  
+// Bank Simulation - 2019
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node {
+int arrivalTime;
+int transactionLength;
+Node* next;
+
+Node(int arrivalTime, int transactionLength) {
+this -> arrivalTime = arrivalTime;
+this -> transactionLength = transactionLength;
+this -> next = NULL;
+}
+};
+
+struct PriorityQueue {
+Node* front;
+Node* rear;
+int size;
+
+PriorityQueue() {
+this -> rear = NULL;
+this -> front = NULL;
+this -> size = 0;
+}
+};
+
+bool isEmpty(PriorityQueue* events) {
+return (events -> size) == 0;
+}
+
+void enqueue(PriorityQueue* events, int arrivalTime, int transactionLength) {
+Node* newEvent = new Node(arrivalTime, transactionLength);
+Node* crawler = events -> front;
+Node* prvs = NULL;
+while(crawler != NULL && crawler -> arrivalTime < newEvent -> arrivalTime) {
+prvs = crawler;
+crawler = crawler -> next;
+}
+if(prvs == NULL) {
+events -> front = newEvent;
+}
+else {
+prvs -> next = newEvent;
+newEvent -> next = crawler;
+}
+events -> size += 1;
+}
+
+Node* dequeX(PriorityQueue* events) {
+Node* result = events -> front;
+if(events -> front != NULL) {
+events -> front = events -> front -> next;
+}
+events -> size -= 1;
+return result;
+}
+
+int main() {
+
+freopen("input.txt", "r", stdin);
+freopen("output.txt", "w", stdout);
+
+PriorityQueue* pq = new PriorityQueue();
+
+int arrivalTime, transactionLength;
+int totalNumberOfEvents = 0;
+
+while(cin >> arrivalTime) {
+cin >> transactionLength;
+++totalNumberOfEvents;
+enqueue(pq, arrivalTime, transactionLength);
+}
+
+int currentTime = 0;
+int totalWaitingTime = 0;
+vector<int> arrivals, departures;
+
+while(!isEmpty(pq)) {
+Node* event = dequeX(pq);
+arrivalTime = event -> arrivalTime;
+arrivals.push_back(arrivalTime);
+transactionLength = event -> transactionLength;
+totalWaitingTime += abs(currentTime - arrivalTime);
+totalWaitingTime += transactionLength;
+currentTime = max(currentTime, arrivalTime);
+currentTime += transactionLength;
+departures.push_back(currentTime);
+}
+
+sort(arrivals.begin(), arrivals.end());
+sort(departures.begin(), departures.end());
+
+int pointerToArrival = 0;
+int pointerToDeparture = 0;
+
+while(pointerToArrival < arrivals.size() && pointerToArrival < departures.size()) {
+if(arrivals[pointerToArrival] < departures[pointerToDeparture]) {
+cout << "Processing an arrival event at time: " << arrivals[pointerToArrival]
+<< endl;
+++pointerToArrival;
+}
+else {
+cout << "Processing a departure event at time: " << departures[pointerToDeparture]
+<< endl;
+++pointerToDeparture;
+}
+}
+
+while(pointerToDeparture < departures.size()) {
+cout << "Processing a departure event at time: " << departures[pointerToDeparture]
+<< endl;
+++pointerToDeparture;
+}
+
+cout << "\n\nFinal Statistics:\n"
+<< "\tTotal number of people processed: " << totalNumberOfEvents << endl
+<< "\tAverage amount of time spent waiting: "
+<< (double) totalWaitingTime / totalNumberOfEvents << endl;
+
+return 0;
+}
