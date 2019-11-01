@@ -1,0 +1,313 @@
+//Mohamed Yousif
+//This porgram is a very short text-based advventure
+
+#include <iostream>
+#include <cstdlib>
+#include <time.h>
+#include <conio.h>
+
+
+using namespace std;
+
+
+void TrapState( int &currentHealth,int  &currentWit,int &tPts);
+void BattleBoss(int &bhealth,int &bwit,int &tPts);
+void BattleState(int &bhealth,int &bwit,int &tPts);
+void ExploreState( int &Health,int &TreasurePoints);
+void EscapeGame( int sentinel);
+
+int main()
+{
+    cout<<"\n Game: Greed Island" << endl;
+    
+    cout<<"\n ***************************************************************";
+    cout<<"\n ***************************************************************";
+    cout<<"\n ******************* Welcome to Greed Island *******************";
+    cout<<"\n ***************************************************************";
+    cout<<"\n ***************************************************************" << endl;
+    
+    cout << "\n I am Aly, and I will be guiding you through this adventurous journey.";
+ 
+	cout << " Your objective is to answer these questions correctly, if you won't, you will loose health... and eventually die.";
+
+    cout << " Choose a name for your warrior: ";
+    char HeroName[20];
+    cin.getline(HeroName, 20);
+
+	cout << " You have 100 health, if lower than 0, you have lose the game.";
+	cout << " Good Luck " << HeroName << endl;
+    
+
+    cout << " Type in 'Enter' to start..";
+    string start;
+    cin >> start;
+    
+    int MainHealth = 100; int MainWit = 100; int treasure_points = 0;
+    bool condition = true; 
+    
+    cout << "\n Some place in the island of Greed..";
+    while (condition)  
+    {
+        cout << " Aly: You're about to enter the estate of the evil leader of the Mahoku clan who you must defeat in order to save the people of Greed.";
+        cout << " Aly: Do you want to explore the estate or continue to approach the castle? Explore = 1 Continue = 2 " << endl;
+        int chosen1_path;
+        cin >> chosen1_path;
+        
+        if (chosen1_path == 1)
+        {
+            cout << "\n Aly: There is an abandoned cave near by which could potentially have treasures";
+            cout << "   It is known that there are also traps laying around for unwanted visitors.";
+            cout << "   Stay cautious." << endl;
+            
+            ExploreState(MainHealth, treasure_points);
+            
+            cout << "\n Leaving the cave now..";
+            cout << "   Aly: Watch out! ";
+            cout << "   ...." << endl;
+            sleep(1);
+            cout << "   You fell in a trap." << endl;
+            
+            TrapState(MainHealth, MainWit, treasure_points);
+            
+            cout << " Continue exploring? Yes = 1 No = 2" << endl;
+            int sub1_path;
+            cin >> sub1_path;
+            if (sub1_path == 1)
+            {
+                cout << " A man weilding a weapon approaches from a distance..";
+                cout << " Aly: Its a guard! He noticed us, you have no choice but to fight him.";
+                BattleState(MainHealth, MainWit, treasure_points);
+                
+            }
+            else if (sub1_path == 2)
+            {
+               cout << " Approaching the castle..";
+            sleep(1);
+            cout << "    Aly: Oh no, a guard has appeared! You must kill him before he notifies the rest.";
+            cout << "    You have no choice but to fight!.." << endl;
+            
+            BattleState(MainHealth, MainWit, treasure_points);
+            
+            cout << " Aly: You stealthely managed to get past the dark tall figure of the castle's gates";
+            cout << " Find the leader of the clan and kill him.";
+            sleep(1);
+            cout << " Oh no! you fell through a trap door." << endl;
+            
+            TrapState(MainHealth,MainWit,treasure_points);
+            
+            cout << " Aly: You were captured by the guards and thrown in the Arena of Death by the order of the leader to fight for your life. ";
+            cout << " A beast-like man emerges out of the arena floor...";
+            cout << " Press 'f' to fight: ";
+            string fight;
+            cin >> fight;
+            cout << " *Swords clashing* " << endl;
+            sleep(1);
+            
+            BattleState(MainHealth, MainWit, treasure_points); 
+            
+            cout << " Aly: Challenge the leader to a duel, provoke him into fighting you and finish him then!";
+            cout << " Enter 'Challenge leader' to see what happens: " << endl;
+            string challenge;
+            cin >> challenge;
+            cout << HeroName << ": I challenge you Mongala! (leader of Mahoku) ";
+            cout << "Mongala: You are not worthy of my time.. However, in honor of Wakili's (Best man) death, I shall do you the courtesy of killing you myself \n";
+            cout << "Aly: Prepare yourself! This is the final fight" << endl;
+            
+            BattleBoss(MainHealth, MainWit, treasure_points); 
+            }
+    
+            
+        }
+        else if (chosen1_path == 2)
+        {
+            cout << " Approaching the castle..";
+            sleep(1);
+            cout << " Aly: Oh no, a guard has appeared! You must kill him before he notifies the rest.";
+            cout << " You have no choice but to fight!.." << endl;
+            
+            BattleState(MainHealth, MainWit, treasure_points);
+            
+            cout << " Aly: You stealthely managed to get past the dark tall figure of the castle's gates";
+            cout << " Find the leader of the clan and kill him.";
+            sleep(1);
+            cout << " Oh no! you fell through a trap door." << endl;
+            
+            TrapState(MainHealth,MainWit,treasure_points);
+            
+            cout << "\n Aly: You were captured by the guards and thrown in the Arena of Death by the order of the leader to fight for your life. ";
+            cout << " A beast-like man emerges out of the arena floor...";
+            cout << " Press 'f' to fight: " << endl;
+            string fight;
+            cin >> fight;
+            cout << " *Swords clashing*" << endl;
+            
+            BattleState(MainHealth, MainWit, treasure_points);
+            
+            cout << "\n Aly: Challenge the leader to a duel, provoke him into fighting you and finish him then!";
+            cout << "   Enter 'Challenge leader' to see what happens: " << endl ;
+            string challenge;
+            cin >> challenge;
+            cout << HeroName << ": I challenge you Mongala! (leader of Mahoku) ";
+            cout << "Mongala: You are not worthy of my time.. However, in honor of Wakili's (Best man) death, I shall do you the courtesy of killing you myself \n";
+            cout << "Aly: Prepare yourself! This is the final fight" << endl ;
+            
+            BattleBoss(MainHealth, MainWit, treasure_points);
+            
+            
+            
+        }
+        else
+        {
+            cout << "\n That's an invalid choice! pick 1 or 2 only." << endl;
+        }
+        
+        cout << "\n To exit the game, enter -1" << endl;
+        int leave;
+        cin >> leave;
+        
+        if (leave == -1)
+        {
+            EscapeGame(leave);
+            condition = false;
+        }
+        else
+        {
+            continue;
+        }
+    }
+    return 0;
+}
+
+void EscapeGame(int sentinel)
+{
+    if (sentinel == -1)
+    {
+        exit(0);
+    }
+}
+
+void ExploreState(int &Health, int &TreasurePoints)
+{
+    int robbery = rand()%2;
+    cout << "\n Exploring...\n" << endl; 
+    if (robbery == 1)
+    {
+        TreasurePoints = 0;
+        Health -= 10;
+        cout << "\n Darn it, you were just robbed!" << endl;
+        
+    }
+    else 
+    {
+        TreasurePoints += 20; Health += 20;
+        
+        if (Health > 100)
+        {
+            Health = 100;
+        }
+        
+        cout << "\n Great! You found a treasure!\n" << endl;
+    }
+}
+
+void BattleState(int &bhealth, int &bwit, int &tPts)
+{
+    int threshold = 50;
+    int SIZE = 4;
+    string hwep [SIZE] = {"Laser Sword", "Ray Gun", "Pistol", "Rifle"};
+    string ewep [SIZE] = {"Sword", "Blaster", "Gun", "Dragon Snake"};
+    
+    int v1 = rand() % 3;
+    int v2 = rand() % 3;
+ 
+    string hgadget = hwep[v1];
+    string egadget = ewep[v2];
+    int ewit = rand() % 92 + 50;
+    
+    if (bhealth > threshold)
+    {
+        if ( (bwit+v1) > (ewit+v2))
+        {
+            cout << "You won the battle!";
+            cout << "Gained Heath & Treasure points: +20 "<<endl;
+            
+            tPts += 20;
+            
+        }
+        else
+        {
+            cout << "You died in battle, you lose" <<endl;
+            cout << "The game will exit now" <<endl;
+            exit(0);
+        }
+    }
+    else 
+    {
+        cout << "You're in no condition to fight! Retreat to recuperate will be the wise choice"<<endl;
+    }
+}
+
+
+void BattleBoss(int &bhealth,int &bwit, int &tPts)
+{
+    int threshold = 50;
+    int SIZE = 4;
+    string hwep [SIZE] = {"Laser Sword", "Ray Gun", "Pistol", "Rifle"};
+    string ewep [SIZE] = {"Sword", "Blaster", "Gun", "Dragon Snake"};
+    
+    int v1 = rand() % 3;
+    int v2 = rand() % 3;
+ 
+    string hgadget = hwep[v1];
+    string egadget = ewep[v2];
+    int ewit = rand() % 92 + 80;
+    
+    if (bhealth > threshold)
+    {
+        if ( (bwit+v1) > (ewit+v2))
+        {
+            cout << "\n You defeated Mongala!! Coingratulations, you won the game! " << endl;
+            cout << "   Gained Heath & Treasure points: +40 "<<endl;
+            
+            tPts += 20;
+             
+            cout << "\n Health: 0" << endl;
+            cout << "   Wit: " << bwit << endl;
+            
+        }
+        else
+        {
+            cout << "\n You died in battle, you lose" <<endl;
+            cout << "\n Health: 0";
+            cout << "   Wit: " << bwit;
+            cout << "   The game will exit now" <<endl;
+            exit(0);
+        }
+    }
+    else 
+    {
+        cout << "\n You're in no condition to fight! Retreat to recuperate will be the wise choice"<<endl;
+    }
+}
+
+void TrapState(int &currentHealth, int &currentWit, int &tPts)
+{
+   int help = rand() % 100 + 1;
+   int difficulty = rand() % 100 + 1;
+   
+   if ((currentHealth+currentWit) > difficulty)
+   {
+       cout<<"You survived the trap!"<<endl;
+       tPts += 20;
+   }
+   else if ((currentHealth+currentWit+help) > difficulty)
+   {
+     cout<<"You survived the trap!"  <<endl;
+       tPts += 20;
+   }
+   else
+   {
+        cout<<"Oh no! you died in the trap"<<endl;
+       
+   }
+}
